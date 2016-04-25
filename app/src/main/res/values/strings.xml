@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">E-Klub Mobile</string>
+    <string name="lblDateTime">Datum i vreme</string>
+    <string name="lblDate">Datum</string>
+    <string name="lblTime">Vreme</string>
+    <string name="lblDurationMin">Trajanje (min)</string>
+    <string name="lblDescription">Opis</string>
+    <string name="lblGroup">Grupa</string>
 </resources>
