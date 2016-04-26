@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -23,6 +24,7 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
 
     private Button mDateButton;
     private Button mTimeButton;
+    private TextView mDateTime;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -57,6 +59,9 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
                 tpd.show(getFragmentManager(), "Timepickerdialog");
             }
         });
+
+        mDateTime = (TextView) findViewById(R.id.lblDateTime);
+
     }
 
     private void loadGroups() {
@@ -94,11 +99,15 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         String date = "You picked the following date: "+dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
         Toast.makeText(this, date, Toast.LENGTH_LONG).show();
+        String selectedDate = dayOfMonth + "/" + monthOfYear + "/" + year;
+        mDateTime.setText(selectedDate);
     }
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
         String time = "You picked the following time: "+hourOfDay+"h"+minute;
         Toast.makeText(this, time, Toast.LENGTH_LONG).show();
+        String selectedTime = hourOfDay + ":" + minute;
+        mDateTime.setText(mDateTime.getText() + " " + selectedTime);
     }
 }
