@@ -6,4 +6,5 @@
     <string name="lblDurationMin">Trajanje (min)</string>
     <string name="lblDescription">Opis</string>
     <string name="lblGroup">Grupa</string>
+    <string name="txtDuration">Trajanje (min)</string>
 </resources>
