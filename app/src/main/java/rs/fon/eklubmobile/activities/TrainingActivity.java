@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,8 +32,8 @@ import rs.fon.eklubmobile.util.GroupSpinnerAdapter;
 public class TrainingActivity extends AppCompatActivity implements EKlubEventListener,
         TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
 
-    private Button mDateButton;
-    private Button mTimeButton;
+    private ImageButton mDateButton;
+    private ImageButton mTimeButton;
     private TextView mDateTime;
     private Spinner mGroup;
 
@@ -42,7 +43,7 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
         setContentView(R.layout.activity_training);
         loadGroups();
 
-        mDateButton = (Button) findViewById(R.id.btnDate);
+        mDateButton = (ImageButton) findViewById(R.id.btnDate);
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,7 +59,7 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
             }
         });
 
-        mTimeButton = (Button) findViewById(R.id.btnTime);
+        mTimeButton = (ImageButton) findViewById(R.id.btnTime);
         mTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,7 +71,7 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
             }
         });
 
-        mDateTime = (TextView) findViewById(R.id.lblDateTime);
+        mDateTime = (TextView) findViewById(R.id.lblDateTimeValue);
         setDate(Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH));

@@ -39,8 +39,8 @@ public class GetAllGroupsTask extends AsyncTask<String, Integer, Boolean> {
 
         try {
             connection = (HttpURLConnection) (new URL(resourceUrl).openConnection());
-            connection.setConnectTimeout(10000);
-            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(20000);
+            connection.setReadTimeout(20000);
             int statusCode = connection.getResponseCode();
             if(statusCode != HttpURLConnection.HTTP_OK) {
                 mResult = "HTTP greška, status kod: " + statusCode;
