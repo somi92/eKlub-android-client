@@ -1,5 +1,6 @@
 package rs.fon.eklubmobile.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
     private ImageButton mTimeButton;
     private TextView mDateTime;
     private Spinner mGroup;
+    private Button mAttendances;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -79,6 +81,16 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
                 Calendar.getInstance().get(Calendar.MINUTE));
 
         mGroup = (Spinner) findViewById(R.id.spnGroup);
+
+        mAttendances = (Button) findViewById(R.id.btnAttendances);
+        mAttendances.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TrainingActivity.this, AttendancesActivity.class);
+                intent.putExtra("groupId", ((HashMap<String, String>) mGroup.getSelectedItem()).get("id"));
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadGroups() {
