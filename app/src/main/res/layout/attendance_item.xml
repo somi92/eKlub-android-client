@@ -32,6 +32,7 @@
             android:textSize="23sp"/>
 
         <EditText
+            android:id="@+id/txtLateMin"
             android:inputType="number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,6 +51,7 @@
         android:paddingRight="20dip">
 
         <CheckBox
+            android:id="@+id/chbIsAttendant"
             android:scaleX="2.1"
             android:scaleY="2.1"
             android:layout_width="wrap_content"
