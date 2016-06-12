@@ -20,7 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="#b5b5b5"
-            android:dividerHeight="1dp" >
+            android:descendantFocusability="beforeDescendants"
+            android:dividerHeight="2dp" >
         </ListView>
 
     </ScrollView>

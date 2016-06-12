@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginRight="5dip"
+    android:paddingBottom="10dp"
     android:orientation="horizontal">
 
     <TextView
@@ -38,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#BA0000"
+            android:textAlignment="center"
             android:textSize="20dp" />
 
     </LinearLayout>

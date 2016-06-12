@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -32,7 +33,7 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
     private ListView mAttendancesListView;
     private List<JSONObject> mAttendances;
 
-    private String[] mTempEditText;
+    private int[] mTempEditText;
     private boolean[] mTempIsAttendant;
 
     @Override
@@ -81,7 +82,7 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
     }
 
     private void populateAttendanceList(JSONArray data) throws JSONException {
-        mTempEditText = new String[data.length()];
+        mTempEditText = new int[data.length()];
         mTempIsAttendant = new boolean[data.length()];
         mAttendances = new ArrayList<>();
         for(int i=0; i<data.length(); i++) {
@@ -90,10 +91,13 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
             attendance.put("member", member);
             attendance.put("lateMin", 0);
             attendance.put("isAttendant", true);
+            mTempEditText[i] = 0;
+            mTempIsAttendant[i] = true;
             mAttendances.add(attendance);
         }
         AttendanceListAdapter attendancesAdapter = new AttendanceListAdapter();
         mAttendancesListView.setAdapter(attendancesAdapter);
+
     }
 
     private class AttendanceListAdapter extends BaseAdapter {
@@ -137,7 +141,7 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
 
             try {
                 holder.textView.setText(obj.getJSONObject("member").getString("nameSurname"));
-                holder.editText.setText(mTempEditText[position]);
+                holder.editText.setText(mTempEditText[position] + "");
                 holder.checkBox.setChecked(mTempIsAttendant[position]);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -156,14 +160,32 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    mTempEditText[holder.position] = editable.toString();
+
+                    int lateMin = 0;
+                    try {
+                        lateMin = Integer.parseInt(editable.toString());
+                    } catch (Exception e) {
+                        lateMin = 0;
+                    }
+
+                    try {
+                        mAttendances.get(holder.position).put("lateMin", lateMin);
+                        mTempEditText[holder.position] = lateMin;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    mTempIsAttendant[holder.position] = b;
+                    try {
+                        mAttendances.get(holder.position).put("isAttendant", b);
+                        mTempIsAttendant[holder.position] = b;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
