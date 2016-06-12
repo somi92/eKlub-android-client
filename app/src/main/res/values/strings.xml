@@ -10,4 +10,6 @@
     <string name="txtDuration">Trajanje (min)</string>
     <string name="txtDescription">Opis</string>
     <string name="btnAttendances">Članovi</string>
+    <string name="lblLate">Kašnjenje: </string>
+    <string name="selection_done">Završeno</string>
 </resources>

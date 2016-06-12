@@ -10,11 +10,10 @@
         android:id="@+id/lblMember"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Milos Stojanovic"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:textColor="#000000"
-        android:textSize="23sp"/>
+        android:textSize="21sp"/>
 
     <LinearLayout
         android:layout_below="@+id/lblMember"
@@ -25,12 +24,12 @@
             android:id="@+id/lblLateMin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Kasnjenje: "
+            android:text="@string/lblLate"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:textColor="#BA0000"
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
 
         <EditText
             android:id="@+id/txtLateMin"
@@ -40,7 +39,7 @@
             android:layout_height="wrap_content"
             android:textColor="#BA0000"
             android:textAlignment="center"
-            android:textSize="20dp" />
+            android:textSize="18dp" />
 
     </LinearLayout>
 

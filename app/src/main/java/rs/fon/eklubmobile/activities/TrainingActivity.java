@@ -28,6 +28,7 @@ import java.util.List;
 import rs.fon.eklubmobile.R;
 import rs.fon.eklubmobile.listeners.EKlubEventListener;
 import rs.fon.eklubmobile.tasks.GetAllGroupsTask;
+import rs.fon.eklubmobile.util.Constants;
 import rs.fon.eklubmobile.util.GroupSpinnerAdapter;
 
 public class TrainingActivity extends AppCompatActivity implements EKlubEventListener,
@@ -37,7 +38,10 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
     private ImageButton mTimeButton;
     private TextView mDateTime;
     private Spinner mGroup;
-    private Button mAttendances;
+    private Button mAttendancesButton;
+
+    private JSONObject mTraining;
+    private List<JSONObject> mAttendances;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -82,13 +86,13 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
 
         mGroup = (Spinner) findViewById(R.id.spnGroup);
 
-        mAttendances = (Button) findViewById(R.id.btnAttendances);
-        mAttendances.setOnClickListener(new View.OnClickListener() {
+        mAttendancesButton = (Button) findViewById(R.id.btnAttendances);
+        mAttendancesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TrainingActivity.this, AttendancesActivity.class);
                 intent.putExtra("groupId", ((HashMap<String, String>) mGroup.getSelectedItem()).get("id"));
-                startActivity(intent);
+                startActivityForResult(intent, Constants.SET_ATTENDANCES_REQUEST);
             }
         });
     }
@@ -147,6 +151,15 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
         setTime(hourOfDay, minute);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == Constants.SET_ATTENDANCES_REQUEST) {
+
+        }
     }
 
     private void setDate(int year, int month, int dayOfMonth) {
