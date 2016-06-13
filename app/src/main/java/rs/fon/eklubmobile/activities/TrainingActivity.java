@@ -2,6 +2,7 @@ package rs.fon.eklubmobile.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -155,6 +156,9 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
 
         if(requestCode == Constants.SET_ATTENDANCES_REQUEST) {
 
+            Parcelable[] parcelables = data.getParcelableArrayExtra("attendances");
+            Attendance[] attendances = Arrays.copyOf(parcelables, parcelables.length, Attendance[].class);
+            mAttendances = Arrays.asList(attendances);
         }
     }
 

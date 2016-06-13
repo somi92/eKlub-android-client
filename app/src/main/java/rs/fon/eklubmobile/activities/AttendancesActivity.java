@@ -28,6 +28,7 @@ import rs.fon.eklubmobile.entities.Attendance;
 import rs.fon.eklubmobile.entities.Member;
 import rs.fon.eklubmobile.listeners.EKlubEventListener;
 import rs.fon.eklubmobile.tasks.GetMembersTask;
+import rs.fon.eklubmobile.util.Constants;
 
 public class AttendancesActivity extends AppCompatActivity implements EKlubEventListener<Member[]> {
 
@@ -68,7 +69,11 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
         int id = item.getItemId();
         if(id == R.id.done_button) {
             Intent intent = new Intent();
-//            intent.putParcelableArrayListExtra("attendances", mAttendances);
+            Attendance[] attendances = new Attendance[mAttendances.size()];
+            attendances = mAttendances.toArray(attendances);
+            intent.putExtra("attendances", attendances);
+            setResult(Constants.SET_ATTENDANCES_REQUEST, intent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
