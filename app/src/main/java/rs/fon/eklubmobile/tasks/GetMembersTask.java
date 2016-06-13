@@ -2,6 +2,9 @@ package rs.fon.eklubmobile.tasks;
 
 import android.os.AsyncTask;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +17,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Scanner;
 
+import rs.fon.eklubmobile.entities.Member;
 import rs.fon.eklubmobile.listeners.EKlubEventListener;
 
 /**
@@ -21,7 +25,7 @@ import rs.fon.eklubmobile.listeners.EKlubEventListener;
  */
 public class GetMembersTask extends AsyncTask<String, Integer, Boolean> {
 
-    private EKlubEventListener mListener;
+    private EKlubEventListener<Member[]> mListener;
     private String mResult;
 
     public GetMembersTask(EKlubEventListener listener) { mListener = listener; }
@@ -63,13 +67,16 @@ public class GetMembersTask extends AsyncTask<String, Integer, Boolean> {
             mResult = getResponseText(inStream);
 
         } catch (SocketTimeoutException e) {
+            e.printStackTrace();
             mResult = "Greška! Konekcija je istekla: "+e.getMessage();
             return false;
         } catch (IOException e) {
+            e.printStackTrace();
             mResult = "Greška! I/O sistem ne može preuzeti podatke: "+e.getMessage();
             return false;
         }
         catch (Exception e) {
+            e.printStackTrace();
             mResult = "Greška! Sistem ne može preuzeti podatke: "+e.getMessage();
             return false;
         } finally {
@@ -86,16 +93,27 @@ public class GetMembersTask extends AsyncTask<String, Integer, Boolean> {
     protected void onPostExecute(Boolean isSuccessful) {
         try {
             if(isSuccessful) {
-                mListener.onDataReceived(new JSONObject(mResult));
+                Member[] members = getMembers();
+                mListener.onDataReceived(members);
             } else {
                 mListener.onNotificationReceived(mResult);
             }
         } catch (JSONException e) {
+            e.printStackTrace();
             mListener.onNotificationReceived("Greška! JSON parsiranje neuspešno.");
         } catch (Exception e) {
+            e.printStackTrace();
             mListener.onNotificationReceived("Greška! Prikaz podataka neuspešan.");
         }
         mListener.onTaskFinished();
+    }
+
+    private Member[] getMembers() throws JSONException {
+        JSONObject obj = new JSONObject(mResult);
+        JSONArray array = obj.getJSONArray("payload");
+        Gson gson = new Gson();
+        Member[] groups = gson.fromJson(array.toString(), Member[].class);
+        return groups;
     }
 
     private static String getResponseText(InputStream in) {

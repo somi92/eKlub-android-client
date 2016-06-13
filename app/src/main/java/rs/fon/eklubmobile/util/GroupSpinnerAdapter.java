@@ -10,29 +10,30 @@ import java.util.HashMap;
 import java.util.List;
 
 import rs.fon.eklubmobile.R;
+import rs.fon.eklubmobile.entities.Group;
 
 /**
  * Created by milos on 6/8/16.
  */
-public class GroupSpinnerAdapter extends ArrayAdapter<HashMap<String, String>> {
+public class GroupSpinnerAdapter extends ArrayAdapter<Group> {
 
-    private List<HashMap<String, String>> mGroups;
+    private List<Group> mGroups;
 
-    public GroupSpinnerAdapter(Context context, int resource, List<HashMap<String, String>> groups) {
+    public GroupSpinnerAdapter(Context context, int resource, List<Group> groups) {
         super(context, resource, groups);
         mGroups = groups;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        HashMap<String, String> group = mGroups.get(position);
+        Group group = mGroups.get(position);
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.group_spinner_selected_item, parent, false);
         }
 
         if(group != null) {
             TextView groupName = (TextView) convertView;
-            groupName.setText(group.get("name"));
+            groupName.setText(group.getName());
         }
 
         return convertView;
@@ -40,14 +41,14 @@ public class GroupSpinnerAdapter extends ArrayAdapter<HashMap<String, String>> {
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        HashMap<String, String> group = mGroups.get(position);
+        Group group = mGroups.get(position);
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.group_spinner_item, parent, false);
         }
 
         if(group != null) {
             TextView groupName = (TextView) convertView.findViewById(R.id.group_name);
-            groupName.setText(group.get("name"));
+            groupName.setText(group.getName());
         }
 
         return convertView;

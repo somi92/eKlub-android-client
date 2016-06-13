@@ -27,9 +27,9 @@ public class Member implements Parcelable {
     @SerializedName("phone")
     private String phone;
     @SerializedName("dateOfBirth")
-    private Date dateOfBirth;
+    private String dateOfBirth;
     @SerializedName("dateOfMembership")
-    private Date dateOfMembership;
+    private String dateOfMembership;
     @SerializedName("remark")
     private String remark;
 
@@ -120,19 +120,19 @@ public class Member implements Parcelable {
         this.phone = phone;
     }
 
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Date getDateOfMembership() {
+    public String getDateOfMembership() {
         return dateOfMembership;
     }
 
-    public void setDateOfMembership(Date dateOfMembership) {
+    public void setDateOfMembership(String dateOfMembership) {
         this.dateOfMembership = dateOfMembership;
     }
 

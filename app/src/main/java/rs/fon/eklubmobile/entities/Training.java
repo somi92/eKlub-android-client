@@ -16,7 +16,7 @@ public class Training implements Parcelable {
     @SerializedName("id")
     private long id;
     @SerializedName("dateTime")
-    private Date dateTime;
+    private String dateTime;
     @SerializedName("durationMinutes")
     private int durationMinutes;
     @SerializedName("description")
@@ -57,11 +57,11 @@ public class Training implements Parcelable {
         this.id = id;
     }
 
-    public Date getDateTime() {
+    public String getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(Date dateTime) {
+    public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }
 

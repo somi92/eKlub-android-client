@@ -14,8 +14,8 @@ public class Attendance implements Parcelable {
     private long id;
     @SerializedName("member")
     private Member member;
-    @SerializedName("training")
-    private Training training;
+//    @SerializedName("training")
+//    private Training training;
     @SerializedName("isAttendant")
     private boolean isAttendant;
     @SerializedName("lateMin")
@@ -24,10 +24,10 @@ public class Attendance implements Parcelable {
     public Attendance() {
     }
 
-    public Attendance(long id, Member member, Training training, boolean isAttendant, int lateMin) {
+    public Attendance(long id, Member member, boolean isAttendant, int lateMin) {
         this.id = id;
         this.member = member;
-        this.training = training;
+//        this.training = training;
         this.isAttendant = isAttendant;
         this.lateMin = lateMin;
     }
@@ -67,13 +67,13 @@ public class Attendance implements Parcelable {
         this.member = member;
     }
 
-    public Training getTraining() {
-        return training;
-    }
-
-    public void setTraining(Training training) {
-        this.training = training;
-    }
+//    public Training getTraining() {
+//        return training;
+//    }
+//
+//    public void setTraining(Training training) {
+//        this.training = training;
+//    }
 
     public boolean isIsAttendant() {
         return isAttendant;

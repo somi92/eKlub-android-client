@@ -20,18 +20,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
 import rs.fon.eklubmobile.R;
+import rs.fon.eklubmobile.entities.Attendance;
+import rs.fon.eklubmobile.entities.Group;
+import rs.fon.eklubmobile.entities.Training;
 import rs.fon.eklubmobile.listeners.EKlubEventListener;
 import rs.fon.eklubmobile.tasks.GetAllGroupsTask;
 import rs.fon.eklubmobile.util.Constants;
 import rs.fon.eklubmobile.util.GroupSpinnerAdapter;
 
-public class TrainingActivity extends AppCompatActivity implements EKlubEventListener,
+public class TrainingActivity extends AppCompatActivity implements EKlubEventListener<Group[]>,
         TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
 
     private ImageButton mDateButton;
@@ -40,8 +45,8 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
     private Spinner mGroup;
     private Button mAttendancesButton;
 
-    private JSONObject mTraining;
-    private List<JSONObject> mAttendances;
+    private Training mTraining;
+    private List<Attendance> mAttendances;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -91,7 +96,7 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TrainingActivity.this, AttendancesActivity.class);
-                intent.putExtra("groupId", ((HashMap<String, String>) mGroup.getSelectedItem()).get("id"));
+                intent.putExtra("groupId", ((Group) mGroup.getSelectedItem()).getId() + "");
                 startActivityForResult(intent, Constants.SET_ATTENDANCES_REQUEST);
             }
         });
@@ -103,18 +108,10 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
         groupsTask.execute(url);
     }
 
-    private void populateGroupSpinner(JSONArray groups) throws JSONException {
-        List<HashMap<String, String>> groupsData = new ArrayList<>();
-        for(int i = 0; i < groups.length(); i++) {
-            JSONObject jsonObject = groups.getJSONObject(i);
-            HashMap<String, String> group = new HashMap<>();
-            group.put("id", jsonObject.getString("id"));
-            group.put("name", jsonObject.getString("name"));
-            groupsData.add(group);
-        }
-
-        ArrayAdapter<HashMap<String, String>> groupsAdapter = new GroupSpinnerAdapter(TrainingActivity.this,
-                R.layout.group_spinner_selected_item, groupsData);
+    private void populateGroupSpinner(Group[] groups) throws JSONException {
+        List<Group> groupsList = Arrays.asList(groups);
+        ArrayAdapter<Group> groupsAdapter = new GroupSpinnerAdapter(TrainingActivity.this,
+                R.layout.group_spinner_selected_item, groupsList);
         mGroup.setAdapter(groupsAdapter);
     }
 
@@ -124,10 +121,9 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
     }
 
     @Override
-    public void onDataReceived(JSONObject data) {
+    public void onDataReceived(Group[] data) {
         try {
-            JSONArray group = data.getJSONArray("payload");
-            populateGroupSpinner(group);
+            populateGroupSpinner(data);
         } catch (Exception e) {
             e.printStackTrace();
         }

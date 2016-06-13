@@ -1,9 +1,8 @@
 package rs.fon.eklubmobile.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -20,21 +18,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import rs.fon.eklubmobile.R;
+import rs.fon.eklubmobile.entities.Attendance;
+import rs.fon.eklubmobile.entities.Member;
 import rs.fon.eklubmobile.listeners.EKlubEventListener;
 import rs.fon.eklubmobile.tasks.GetMembersTask;
 
-public class AttendancesActivity extends AppCompatActivity implements EKlubEventListener {
+public class AttendancesActivity extends AppCompatActivity implements EKlubEventListener<Member[]> {
 
     private ListView mAttendancesListView;
-    private List<JSONObject> mAttendances;
+    private List<Attendance> mAttendances;
 
     private int[] mTempEditText;
     private boolean[] mTempIsAttendant;
@@ -81,9 +79,8 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
     }
 
     @Override
-    public void onDataReceived(JSONObject data) {
+    public void onDataReceived(Member[] members) {
         try {
-            JSONArray members = data.getJSONArray("payload");
             populateAttendanceList(members);
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,16 +97,15 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    private void populateAttendanceList(JSONArray data) throws JSONException {
-        mTempEditText = new int[data.length()];
-        mTempIsAttendant = new boolean[data.length()];
+    private void populateAttendanceList(Member[] members) throws JSONException {
+        mTempEditText = new int[members.length];
+        mTempIsAttendant = new boolean[members.length];
         mAttendances = new ArrayList<>();
-        for(int i=0; i<data.length(); i++) {
-            JSONObject member = data.getJSONObject(i);
-            JSONObject attendance = new JSONObject();
-            attendance.put("member", member);
-            attendance.put("lateMin", 0);
-            attendance.put("isAttendant", true);
+        for(int i=0; i<members.length; i++) {
+            Attendance attendance = new Attendance();
+            attendance.setMember(members[i]);
+            attendance.setLateMin(0);
+            attendance.setIsAttendant(true);
             mTempEditText[i] = 0;
             mTempIsAttendant[i] = true;
             mAttendances.add(attendance);
@@ -143,7 +139,7 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
         }
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            JSONObject obj = mAttendances.get(position);
+            Attendance attendance = mAttendances.get(position);
             final ViewHolder holder;
             if(convertView == null) {
                 holder = new ViewHolder();
@@ -158,13 +154,9 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
 
             holder.position = position;
 
-            try {
-                holder.textView.setText(obj.getJSONObject("member").getString("nameSurname"));
-                holder.editText.setText(mTempEditText[position] + "");
-                holder.checkBox.setChecked(mTempIsAttendant[position]);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            holder.textView.setText(attendance.getMember().getNameSurname());
+            holder.editText.setText(mTempEditText[position] + "");
+            holder.checkBox.setChecked(mTempIsAttendant[position]);
 
             holder.editText.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -187,24 +179,16 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
                         lateMin = 0;
                     }
 
-                    try {
-                        mAttendances.get(holder.position).put("lateMin", lateMin);
-                        mTempEditText[holder.position] = lateMin;
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    mAttendances.get(holder.position).setLateMin(lateMin);
+                    mTempEditText[holder.position] = lateMin;
                 }
             });
 
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    try {
-                        mAttendances.get(holder.position).put("isAttendant", b);
-                        mTempIsAttendant[holder.position] = b;
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    mAttendances.get(holder.position).setIsAttendant(b);
+                    mTempIsAttendant[holder.position] = b;
                 }
             });
 
