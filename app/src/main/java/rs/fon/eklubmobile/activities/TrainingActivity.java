@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -98,7 +99,24 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
             public void onClick(View view) {
                 Intent intent = new Intent(TrainingActivity.this, AttendancesActivity.class);
                 intent.putExtra("groupId", ((Group) mGroup.getSelectedItem()).getId() + "");
+                if(mAttendances != null && mAttendances.size() > 0) {
+                    Attendance[] attendances = new Attendance[mAttendances.size()];
+                    attendances = mAttendances.toArray(attendances);
+                    intent.putExtra("attendances", attendances);
+                }
                 startActivityForResult(intent, Constants.SET_ATTENDANCES_REQUEST);
+            }
+        });
+
+        mGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mAttendances = null;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                mAttendances = null;
             }
         });
     }
@@ -156,6 +174,8 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
 
         if(requestCode == Constants.SET_ATTENDANCES_REQUEST) {
 
+            if(data == null)
+                return;
             Parcelable[] parcelables = data.getParcelableArrayExtra("attendances");
             Attendance[] attendances = Arrays.copyOf(parcelables, parcelables.length, Attendance[].class);
             mAttendances = Arrays.asList(attendances);

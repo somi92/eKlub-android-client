@@ -2,6 +2,7 @@ package rs.fon.eklubmobile.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import rs.fon.eklubmobile.R;
@@ -45,9 +47,15 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
 
         mAttendancesListView = (ListView) findViewById(R.id.attendancesListView);
 
-        Bundle bundle = getIntent().getExtras();
-        String id = bundle.getString("groupId");
-        loadMembers(id);
+        Parcelable[] parcelables = getIntent().getParcelableArrayExtra("attendances");
+        if(parcelables != null && parcelables.length > 0) {
+            Attendance[] attendances = Arrays.copyOf(parcelables, parcelables.length, Attendance[].class);
+            populateAttendanceList(attendances);
+        } else {
+            Bundle bundle = getIntent().getExtras();
+            String id = bundle.getString("groupId");
+            loadMembers(id);
+        }
 
     }
 
@@ -86,7 +94,7 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
     @Override
     public void onDataReceived(Member[] members) {
         try {
-            populateAttendanceList(members);
+            populateAttendanceListFromMembers(members);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -102,7 +110,7 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    private void populateAttendanceList(Member[] members) throws JSONException {
+    private void populateAttendanceListFromMembers(Member[] members) throws JSONException {
         mTempEditText = new int[members.length];
         mTempIsAttendant = new boolean[members.length];
         mAttendances = new ArrayList<>();
@@ -117,7 +125,19 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
         }
         AttendanceListAdapter attendancesAdapter = new AttendanceListAdapter();
         mAttendancesListView.setAdapter(attendancesAdapter);
+    }
 
+    private void populateAttendanceList(Attendance[] attendances) {
+        mTempEditText = new int[attendances.length];
+        mTempIsAttendant = new boolean[attendances.length];
+        mAttendances = new ArrayList<>();
+        for(int i=0; i<attendances.length; i++) {
+            mTempEditText[i] = attendances[i].getLateMin();
+            mTempIsAttendant[i] = attendances[i].isIsAttendant();
+        }
+        mAttendances = Arrays.asList(attendances);
+        AttendanceListAdapter attendancesAdapter = new AttendanceListAdapter();
+        mAttendancesListView.setAdapter(attendancesAdapter);
     }
 
     private class AttendanceListAdapter extends BaseAdapter {
