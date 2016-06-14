@@ -35,6 +35,7 @@ import rs.fon.eklubmobile.entities.Group;
 import rs.fon.eklubmobile.entities.Training;
 import rs.fon.eklubmobile.listeners.EKlubEventListener;
 import rs.fon.eklubmobile.tasks.GetAllGroupsTask;
+import rs.fon.eklubmobile.tasks.SaveTrainingTask;
 import rs.fon.eklubmobile.util.Constants;
 import rs.fon.eklubmobile.util.GroupSpinnerAdapter;
 
@@ -46,6 +47,7 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
     private TextView mDateTime;
     private Spinner mGroup;
     private Button mAttendancesButton;
+    private Button mSave;
 
     private Training mTraining;
     private List<Attendance> mAttendances;
@@ -108,6 +110,14 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
             }
         });
 
+        mSave = (Button) findViewById(R.id.btnSave);
+        mSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveTraining();
+            }
+        });
+
         mGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -119,6 +129,22 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
                 mAttendances = null;
             }
         });
+    }
+
+    private void saveTraining() {
+        Training training = new Training();
+        training.setGroup((Group) mGroup.getSelectedItem());
+        training.setDurationMinutes(60);
+        String dateTime = "2016-06-14T22:00:00.000Z";
+        training.setDateTime(dateTime);
+        training.setDescription("Test Android");
+        for(Attendance a : mAttendances) {
+            a.setTraining(training);
+        }
+        training.setAttendances(mAttendances);
+        SaveTrainingTask st = new SaveTrainingTask(this, training);
+        String url = "192.168.1.181:8080";
+        st.execute(url);
     }
 
     private void loadGroups() {
