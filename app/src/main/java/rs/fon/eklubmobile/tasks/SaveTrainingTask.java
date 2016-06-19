@@ -104,7 +104,8 @@ public class SaveTrainingTask extends AsyncTask<String, Integer, Boolean> {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            mListener.onNotificationReceived("Greška! Prikaz podataka neuspešan.");
+            Log.d("APP", "error: " + e.getMessage());
+            mListener.onNotificationReceived("Greška! Prikaz podataka neuspešan: " + e.getMessage());
         }
         mListener.onTaskFinished();
     }

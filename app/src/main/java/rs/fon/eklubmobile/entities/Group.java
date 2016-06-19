@@ -5,10 +5,12 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by milos on 6/13/16.
  */
-public class Group implements Parcelable {
+public class Group implements Parcelable, Serializable {
 
     @SerializedName("id")
     private long id;

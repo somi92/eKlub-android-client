@@ -5,17 +5,17 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by milos on 6/13/16.
  */
-public class Attendance implements Parcelable {
+public class Attendance implements Parcelable, Serializable {
 
     @SerializedName("id")
     private long id;
     @SerializedName("member")
     private Member member;
-    @SerializedName("training")
-    private Training training;
     @SerializedName("isAttendant")
     private boolean isAttendant;
     @SerializedName("lateMin")
@@ -27,7 +27,6 @@ public class Attendance implements Parcelable {
     public Attendance(long id, Member member, boolean isAttendant, int lateMin) {
         this.id = id;
         this.member = member;
-        this.training = training;
         this.isAttendant = isAttendant;
         this.lateMin = lateMin;
     }
@@ -65,14 +64,6 @@ public class Attendance implements Parcelable {
 
     public void setMember(Member member) {
         this.member = member;
-    }
-
-    public Training getTraining() {
-        return training;
-    }
-
-    public void setTraining(Training training) {
-        this.training = training;
     }
 
     public boolean isIsAttendant() {

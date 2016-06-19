@@ -5,12 +5,13 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by milos on 6/13/16.
  */
-public class Member implements Parcelable {
+public class Member implements Parcelable, Serializable {
 
     @SerializedName("id")
     private long id;

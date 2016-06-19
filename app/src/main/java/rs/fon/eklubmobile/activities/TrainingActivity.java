@@ -138,9 +138,6 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
         String dateTime = "2016-06-14T22:00:00.000Z";
         training.setDateTime(dateTime);
         training.setDescription("Test Android");
-        for(Attendance a : mAttendances) {
-            a.setTraining(training);
-        }
         training.setAttendances(mAttendances);
         SaveTrainingTask st = new SaveTrainingTask(this, training);
         String url = "192.168.1.181:8080";

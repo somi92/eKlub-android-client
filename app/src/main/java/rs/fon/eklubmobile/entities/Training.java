@@ -3,16 +3,15 @@ package rs.fon.eklubmobile.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by milos on 6/12/16.
  */
-public class Training implements Parcelable {
+public class Training implements Parcelable, Serializable {
 
 //    @Expose(serialize = false)
     private transient long id;
