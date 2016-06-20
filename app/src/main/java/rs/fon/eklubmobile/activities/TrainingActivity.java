@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -39,8 +40,8 @@ import rs.fon.eklubmobile.tasks.SaveTrainingTask;
 import rs.fon.eklubmobile.util.Constants;
 import rs.fon.eklubmobile.util.GroupSpinnerAdapter;
 
-public class TrainingActivity extends AppCompatActivity implements EKlubEventListener<Group[]>,
-        TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+public class TrainingActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener,
+        DatePickerDialog.OnDateSetListener {
 
     private ImageButton mDateButton;
     private ImageButton mTimeButton;
@@ -49,7 +50,9 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
     private Button mAttendancesButton;
     private Button mSave;
 
-    private Training mTraining;
+    private EditText mDuration;
+    private EditText mDescription;
+
     private List<Attendance> mAttendances;
 
     @Override
@@ -94,6 +97,8 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
                 Calendar.getInstance().get(Calendar.MINUTE));
 
         mGroup = (Spinner) findViewById(R.id.spnGroup);
+        mDuration = (EditText) findViewById(R.id.txtDuration);
+        mDescription = (EditText) findViewById(R.id.txtDescription);
 
         mAttendancesButton = (Button) findViewById(R.id.btnAttendances);
         mAttendancesButton.setOnClickListener(new View.OnClickListener() {
@@ -134,19 +139,21 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
     private void saveTraining() {
         Training training = new Training();
         training.setGroup((Group) mGroup.getSelectedItem());
-        training.setDurationMinutes(60);
-        String dateTime = "2016-06-14T22:00:00.000Z";
+        int duration = mDuration.getText().toString() != null && mDuration.getText().toString().matches("\\d+")
+                ? Integer.parseInt(mDuration.getText().toString()) : 0;
+        training.setDurationMinutes(duration);
+        String dateTime = mDateTime.getText().toString().replace(" ", "T") + ":00.000+02:00";
         training.setDateTime(dateTime);
-        training.setDescription("Test Android");
+        training.setDescription(mDescription.getText().toString());
         training.setAttendances(mAttendances);
-        SaveTrainingTask st = new SaveTrainingTask(this, training);
+        SaveTrainingTask st = new SaveTrainingTask(mSaveTrainingTaskListener, training);
         String url = "192.168.1.181:8080";
         st.execute(url);
     }
 
     private void loadGroups() {
         String url = "192.168.1.181:8080";
-        GetAllGroupsTask groupsTask = new GetAllGroupsTask(this);
+        GetAllGroupsTask groupsTask = new GetAllGroupsTask(mGroupsTaskListener);
         groupsTask.execute(url);
     }
 
@@ -157,29 +164,53 @@ public class TrainingActivity extends AppCompatActivity implements EKlubEventLis
         mGroup.setAdapter(groupsAdapter);
     }
 
-    @Override
-    public void onTaskStarted() {
+    private EKlubEventListener<Group[]> mGroupsTaskListener = new EKlubEventListener<Group[]>() {
+        @Override
+        public void onTaskStarted() {
 
-    }
-
-    @Override
-    public void onDataReceived(Group[] data) {
-        try {
-            populateGroupSpinner(data);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-    }
 
-    @Override
-    public void onTaskFinished() {
+        @Override
+        public void onDataReceived(Group[] data) {
+            try {
+                populateGroupSpinner(data);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
-    }
+        @Override
+        public void onTaskFinished() {
 
-    @Override
-    public void onNotificationReceived(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
+        }
+
+        @Override
+        public void onNotificationReceived(String message) {
+            Toast.makeText(TrainingActivity.this, message, Toast.LENGTH_LONG).show();
+        }
+    };
+
+    private EKlubEventListener<String> mSaveTrainingTaskListener = new EKlubEventListener<String>() {
+        @Override
+        public void onTaskStarted() {
+
+        }
+
+        @Override
+        public void onDataReceived(String data) {
+            Toast.makeText(TrainingActivity.this, data, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onTaskFinished() {
+
+        }
+
+        @Override
+        public void onNotificationReceived(String message) {
+
+        }
+    };
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {

@@ -65,6 +65,7 @@ public class SaveTrainingTask extends AsyncTask<String, Integer, Boolean> {
             int statusCode = connection.getResponseCode();
             if(statusCode != HttpURLConnection.HTTP_OK) {
                 mResult = "HTTP greška, status kod: " + statusCode;
+                Log.d("APP", "mResult: " + mResult);
                 return false;
             }
             InputStream inStream = new BufferedInputStream(connection.getInputStream());
@@ -98,9 +99,9 @@ public class SaveTrainingTask extends AsyncTask<String, Integer, Boolean> {
     protected void onPostExecute(Boolean isSuccessful) {
         try {
             if(isSuccessful) {
-                mListener.onDataReceived(mResult);
+                mListener.onDataReceived("Trening je uspešno sačuvan.");
             } else {
-                mListener.onNotificationReceived(mResult);
+                mListener.onNotificationReceived("Došlo je do greške. Trening nije sačuvan.");
             }
         } catch (Exception e) {
             e.printStackTrace();
