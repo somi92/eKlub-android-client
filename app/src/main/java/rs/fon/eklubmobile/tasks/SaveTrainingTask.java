@@ -99,9 +99,9 @@ public class SaveTrainingTask extends AsyncTask<String, Integer, Boolean> {
     protected void onPostExecute(Boolean isSuccessful) {
         try {
             if(isSuccessful) {
-                mListener.onDataReceived("Trening je uspešno sačuvan.");
+                mListener.onDataReceived("Sistem je evidentirao trening");
             } else {
-                mListener.onNotificationReceived("Došlo je do greške. Trening nije sačuvan.");
+                mListener.onNotificationReceived("Sistem ne može da zapamti trening");
             }
         } catch (Exception e) {
             e.printStackTrace();

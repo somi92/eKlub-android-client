@@ -203,7 +203,7 @@ public class TrainingActivity extends AppCompatActivity implements TimePickerDia
 
         @Override
         public void onNotificationReceived(String message) {
-
+            Toast.makeText(TrainingActivity.this, message, Toast.LENGTH_LONG).show();
         }
     };
 
