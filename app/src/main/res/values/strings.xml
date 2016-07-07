@@ -13,4 +13,5 @@
     <string name="btnSave">Sačuvaj</string>
     <string name="lblLate">Kašnjenje: </string>
     <string name="selection_done">Završeno</string>
+    <string name="btnNew"> Dodaj novi trening</string>
 </resources>
