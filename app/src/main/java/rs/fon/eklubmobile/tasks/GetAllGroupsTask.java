@@ -18,7 +18,6 @@ import java.util.Scanner;
 
 import rs.fon.eklubmobile.entities.Group;
 import rs.fon.eklubmobile.listeners.EKlubEventListener;
-import rs.fon.eklubmobile.util.EKlubContext;
 
 /**
  * Created by milos on 4/22/16.

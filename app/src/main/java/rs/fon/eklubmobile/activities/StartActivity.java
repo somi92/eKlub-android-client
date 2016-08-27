@@ -1,16 +1,16 @@
 package rs.fon.eklubmobile.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import rs.fon.eklubmobile.R;
-import rs.fon.eklubmobile.util.EKlubContext;
+import rs.fon.eklubmobile.util.EKlubApplication;
 
-public class StartActivity extends FragmentActivity {
+public class StartActivity extends Activity {
 
     private String mAuthUrl = "http://192.168.1.181:8081/oauth/authorize";
     private String mAuthClientId = "sampleClientId";
@@ -33,10 +33,10 @@ public class StartActivity extends FragmentActivity {
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                if(url.startsWith("http://192.168.1.181:8081") && url.contains("#access_token=")) {
+                if(url.startsWith(mAuthRedirectUri) && url.contains("#access_token=")) {
                     String accessToken = retrieveAccessToken(url);
                     if(accessToken != null) {
-                        EKlubContext eKlubContext = (EKlubContext) getApplicationContext();
+                        EKlubApplication eKlubContext = (EKlubApplication) getApplicationContext();
                         eKlubContext.setmAccessToken(accessToken);
                         Intent intent = new Intent(StartActivity.this, TrainingActivity.class);
                         startActivity(intent);

@@ -5,7 +5,7 @@ import android.app.Application;
 /**
  * Created by milos on 8/27/16.
  */
-public class EKlubContext extends Application {
+public class EKlubApplication extends Application {
 
     private String mAccessToken;
 

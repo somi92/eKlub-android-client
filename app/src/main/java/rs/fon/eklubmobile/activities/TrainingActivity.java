@@ -33,7 +33,7 @@ import rs.fon.eklubmobile.listeners.EKlubEventListener;
 import rs.fon.eklubmobile.tasks.GetAllGroupsTask;
 import rs.fon.eklubmobile.tasks.SaveTrainingTask;
 import rs.fon.eklubmobile.util.Constants;
-import rs.fon.eklubmobile.util.EKlubContext;
+import rs.fon.eklubmobile.util.EKlubApplication;
 import rs.fon.eklubmobile.util.GroupSpinnerAdapter;
 
 public class TrainingActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener,
@@ -149,7 +149,7 @@ public class TrainingActivity extends AppCompatActivity implements TimePickerDia
 
     private void loadGroups() {
         String url = "192.168.1.181:8080";
-        String accessToken = ((EKlubContext) getApplicationContext()).getmAccessToken();
+        String accessToken = ((EKlubApplication) getApplicationContext()).getmAccessToken();
         GetAllGroupsTask groupsTask = new GetAllGroupsTask(mGroupsTaskListener);
         groupsTask.execute(url, accessToken);
     }
