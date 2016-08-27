@@ -18,6 +18,7 @@ import java.util.Scanner;
 
 import rs.fon.eklubmobile.entities.Group;
 import rs.fon.eklubmobile.listeners.EKlubEventListener;
+import rs.fon.eklubmobile.util.EKlubContext;
 
 /**
  * Created by milos on 4/22/16.
@@ -39,12 +40,14 @@ public class GetAllGroupsTask extends AsyncTask<String, Integer, Boolean> {
     @Override
     protected Boolean doInBackground(String... url) {
         String resourceUrl = "http://" + url[0] + "/groups";
+        String accessToken = url[1];
         HttpURLConnection connection = null;
 
         try {
             connection = (HttpURLConnection) (new URL(resourceUrl).openConnection());
             connection.setConnectTimeout(20000);
             connection.setReadTimeout(20000);
+            connection.setRequestProperty("Authorization", "Bearer " + accessToken);
             int statusCode = connection.getResponseCode();
             if(statusCode != HttpURLConnection.HTTP_OK) {
                 mResult = "HTTP greška, status kod: " + statusCode;
