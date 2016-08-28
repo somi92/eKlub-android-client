@@ -142,9 +142,10 @@ public class TrainingActivity extends AppCompatActivity implements TimePickerDia
         training.setDateTime(dateTime);
         training.setDescription(mDescription.getText().toString());
         training.setAttendances(mAttendances);
+        String accessToken = ((EKlubApplication) getApplicationContext()).getmAccessToken();
         SaveTrainingTask st = new SaveTrainingTask(mSaveTrainingTaskListener, training);
         String url = "192.168.1.181:8080";
-        st.execute(url);
+        st.execute(url, accessToken);
     }
 
     private void loadGroups() {

@@ -31,6 +31,7 @@ import rs.fon.eklubmobile.entities.Member;
 import rs.fon.eklubmobile.listeners.EKlubEventListener;
 import rs.fon.eklubmobile.tasks.GetMembersTask;
 import rs.fon.eklubmobile.util.Constants;
+import rs.fon.eklubmobile.util.EKlubApplication;
 
 public class AttendancesActivity extends AppCompatActivity implements EKlubEventListener<Member[]> {
 
@@ -61,9 +62,10 @@ public class AttendancesActivity extends AppCompatActivity implements EKlubEvent
 
     private void loadMembers(String id) {
         String url = "192.168.1.181:8080";
+        String accessToken = ((EKlubApplication) getApplicationContext()).getmAccessToken();
         String param = String.format("{\"group\":\"%s\"}", id);
         GetMembersTask task = new GetMembersTask(this);
-        task.execute(url, param);
+        task.execute(url, param, accessToken);
     }
 
     @Override

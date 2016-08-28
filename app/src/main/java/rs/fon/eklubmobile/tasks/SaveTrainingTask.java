@@ -43,6 +43,7 @@ public class SaveTrainingTask extends AsyncTask<String, Integer, Boolean> {
     protected Boolean doInBackground(String... url) {
 
         String resourceUrl = "http://" + url[0] + "/trainings";
+        String accessToken = url[1];
         HttpURLConnection connection = null;
 
         try {
@@ -54,6 +55,7 @@ public class SaveTrainingTask extends AsyncTask<String, Integer, Boolean> {
             connection.setConnectTimeout(20000);
             connection.setReadTimeout(20000);
             connection.setRequestMethod("POST");
+            connection.setRequestProperty("Authorization", "Bearer " + accessToken);
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("charset", "utf-8");
 

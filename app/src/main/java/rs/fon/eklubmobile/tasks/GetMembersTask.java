@@ -39,7 +39,7 @@ public class GetMembersTask extends AsyncTask<String, Integer, Boolean> {
     protected Boolean doInBackground(String... url) {
 
         String resourceUrl = "http://" + url[0] + "/members/search";
-        String accessToken = url[1];
+        String accessToken = url[2];
         HttpURLConnection connection = null;
 
         try {

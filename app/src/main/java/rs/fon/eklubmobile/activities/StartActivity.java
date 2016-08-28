@@ -36,6 +36,7 @@ public class StartActivity extends Activity {
                 if(url.startsWith(mAuthRedirectUri) && url.contains("#access_token=")) {
                     String accessToken = retrieveAccessToken(url);
                     if(accessToken != null) {
+                        mAuthMessage.setText("Autentikacija je uspešna.");
                         EKlubApplication eKlubContext = (EKlubApplication) getApplicationContext();
                         eKlubContext.setmAccessToken(accessToken);
                         Intent intent = new Intent(StartActivity.this, TrainingActivity.class);
