@@ -13,10 +13,10 @@ import rs.fon.eklubmobile.util.EKlubApplication;
 public class StartActivity extends Activity {
 
     private String mAuthUrl = "http://192.168.1.181:8081/oauth/authorize";
-    private String mAuthClientId = "sampleClientId";
+    private String mAuthClientId = "eKlubMobileClient4vY6OMfvNC4HKtAb8Lr4eT7pKsyGI";
     private String mAuthResponseType = "token";
     private String mAuthRedirectUri = "https://mpowafin.co.za/assets/icon-tick.svg";
-    private String mAuthScope = "read";
+    private String mAuthScope = "mobile";
     private String mAuthUriTemplate = "%s?response_type=%s&client_id=%s&redirect_uri=%s&scope=%s";
 
     private TextView mAuthMessage;
